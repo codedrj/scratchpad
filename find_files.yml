@@ -1,0 +1,43 @@
+---
+- hosts: all
+  gather_facts: false
+  environment:
+  vars:
+    base_path: "/tmp/incoming/files/ftmach"
+    processing: "processing"
+    error: "error"
+  vars_files:
+  tasks:
+
+  - name: Search for files in the processing directory
+    ansible.builtin.find:
+      paths: '{{ base_path }}/{{ processing }}'
+      age: 900
+      recurse: true
+    register: result
+
+  - ansible.builtin.debug:
+      var: result 
+
+  - ansible.builtin.debug:
+      msg: "{{ result.matched }} files older than 15 minutes"  
+    when: result.matched | int != 0
+
+  - name: Search for files in the error directory
+    ansible.builtin.find:
+      paths: '{{ base_path }}/{{ item }}'
+      age: 900
+      recurse: true
+    loop:
+      - error
+      - processing
+    register: new_result
+
+  - ansible.builtin.debug:
+      var: new_result 
+
+        #  - ansible.builtin.debug:
+        #      msg: "{{ result.matched }} files older than 15 minutes"  
+        #    when: new_result.results[examined] | int != 0
+
+
