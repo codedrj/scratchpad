@@ -36,6 +36,10 @@
   - ansible.builtin.debug:
       var: new_result 
 
+  - name: Debug looped reults
+    ansible.builtin.debug:
+      var: new_result.results
+
         #  - ansible.builtin.debug:
         #      msg: "{{ result.matched }} files older than 15 minutes"  
         #    when: new_result.results[examined] | int != 0
