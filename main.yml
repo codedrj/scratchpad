@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: false
+  environment:
+  vars:
+  vars_files:
+  tasks:
+  - name: display message
+    ansible.builtin.debug:
+      msg: "Hello World"
